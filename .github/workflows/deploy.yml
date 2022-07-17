@@ -13,6 +13,11 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
 
+      - name: Install yq
+        run: |
+          sudo curl -fL https://github.com/mikefarah/yq/releases/download/v4.26.1/yq_linux_amd64 -o /bin/yq
+          sudo chmod +x /bin/yq
+
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -40,12 +45,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: minghsu0107/cicd-demo-ga:${{ github.ref_name }}-${{ steps.get-sha.outputs.sha }},minghsu0107/cicd-demo-ga:latest
-
-      - name: Install yq
-        run: |
-          curl -fL https://github.com/mikefarah/yq/releases/download/v4.26.1/yq_linux_amd64 -o /bin/yq
-          chmod +x /bin/yq
+          tags: minghsu0107/cicd-demo-ga-remote:${{ github.ref_name }}-${{ steps.get-sha.outputs.sha }},minghsu0107/cicd-demo-ga-remote:latest
 
       - name: Update Manifests - Production
         env:
@@ -57,7 +57,7 @@ jobs:
           git clone ssh://git@github.com/minghsu0107/cicd-demo-remote-manifests.git && cd cicd-demo-remote-manifests && git checkout main
           cd overlays/production
 
-          kustomize edit set image minghsu0107/cicd-demo-ga:$IMAGE_TAG
+          kustomize edit set image minghsu0107/cicd-demo-ga-remote:$IMAGE_TAG
 
           yq '.resources[0]' kustomization.yaml > /tmp/input.txt
           REMOTE_URL=`cut -d'?' -f1 /tmp/input.txt`
