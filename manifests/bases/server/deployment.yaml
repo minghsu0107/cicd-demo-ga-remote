@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: cicd-demo-container
-        image: minghsu0107/cicd-demo-ga:latest
+        image: minghsu0107/cicd-demo-ga-remote:latest
         ports:
         - containerPort: 8000
         env:
