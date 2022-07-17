@@ -1,0 +1,6 @@
+namespace: test
+nameSuffix: -dev
+resources:
+- ../../bases/
+- server/
+- namespace.yaml

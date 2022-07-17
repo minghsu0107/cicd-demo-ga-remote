@@ -1,0 +1,5 @@
+patches:
+- path: overlay.yaml
+  target:
+    kind: Deployment
+    labelSelector: app=cicd-demo
